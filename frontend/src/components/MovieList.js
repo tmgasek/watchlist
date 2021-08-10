@@ -1,11 +1,16 @@
 import React from 'react';
 import MovieItem from './MovieItem';
 
-const MovieList = ({ items }) => {
+const MovieList = ({ items, watchlist, setWatchlist }) => {
   return (
     <div>
       {items.map((item) => (
-        <MovieItem item={item} />
+        <MovieItem
+          key={item.id}
+          item={item}
+          setWatchlist={setWatchlist}
+          watchlist={watchlist}
+        />
       ))}
     </div>
   );

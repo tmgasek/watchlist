@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
 import movieDb from './apis/themoviedb';
 import MovieList from './components/MovieList';
 import SearchBar from './components/SearchBar';
+import Watchlist from './components/Watchlist';
 
 const App = () => {
   const [movieTerm, setMovieTerm] = useState('');
   const [results, setResults] = useState([]);
+  const [watchlist, setWatchlist] = useState([]);
 
   useEffect(() => {
     const search = async () => {
@@ -24,11 +27,33 @@ const App = () => {
     }
   }, [movieTerm]);
 
+  const padding = {
+    paddingRight: 5,
+  };
+
   return (
     <div>
-      <SearchBar setMovieTerm={setMovieTerm} />
-      <MovieList items={results} />
-      <h2>hello</h2>
+      <div>
+        <Link style={padding} to="/search">
+          search
+        </Link>
+        <Link style={padding} to="/watchlist">
+          watchlist
+        </Link>
+      </div>
+      <Switch>
+        <Route path="/watchlist">
+          <Watchlist watchlist={watchlist} />
+        </Route>
+        <Route path="/search">
+          <SearchBar setMovieTerm={setMovieTerm} />
+          <MovieList
+            items={results}
+            setWatchlist={setWatchlist}
+            watchlist={watchlist}
+          />
+        </Route>
+      </Switch>
     </div>
   );
 };
