@@ -6,7 +6,7 @@ const Watchlist = ({ watchlist }) => {
     <div>
       <h2>watchlist</h2>
       {watchlist.map((m) => (
-        <div>{m.title}</div>
+        <div key={m.id}>{m.title}</div>
       ))}
     </div>
   );

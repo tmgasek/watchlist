@@ -11,6 +11,14 @@ const App = () => {
   const [watchlist, setWatchlist] = useState([]);
 
   useEffect(() => {
+    const storedWatchlist = JSON.parse(localStorage.getItem('watchlist'));
+    console.log(storedWatchlist);
+    if (storedWatchlist) {
+      setWatchlist(storedWatchlist);
+    }
+  }, []);
+
+  useEffect(() => {
     const search = async () => {
       const result = await movieDb.get('search/movie', {
         params: {
@@ -34,7 +42,7 @@ const App = () => {
   return (
     <div>
       <div>
-        <Link style={padding} to="/search">
+        <Link style={padding} to="/">
           search
         </Link>
         <Link style={padding} to="/watchlist">
@@ -45,7 +53,7 @@ const App = () => {
         <Route path="/watchlist">
           <Watchlist watchlist={watchlist} />
         </Route>
-        <Route path="/search">
+        <Route path="/">
           <SearchBar setMovieTerm={setMovieTerm} />
           <MovieList
             items={results}

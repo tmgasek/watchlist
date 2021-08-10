@@ -2,8 +2,17 @@ import React from 'react';
 
 const MovieItem = ({ item, watchlist, setWatchlist }) => {
   const onSaveClick = () => {
-    console.log(item);
     setWatchlist((watchlist) => [...watchlist, item]);
+
+    const storedWatchlist = JSON.parse(localStorage.getItem('watchlist'));
+    if (storedWatchlist) {
+      localStorage.setItem(
+        'watchlist',
+        JSON.stringify([...storedWatchlist, item])
+      );
+    } else {
+      localStorage.setItem('watchlist', JSON.stringify([...[], item]));
+    }
   };
 
   return (
