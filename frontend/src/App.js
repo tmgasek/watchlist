@@ -10,9 +10,15 @@ const App = () => {
   const [results, setResults] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
 
+  const findShared = () => {
+    const shared = results.filter((res) =>
+      watchlist.find((movie) => movie.id === res.id)
+    );
+    console.log(shared);
+  };
+
   useEffect(() => {
     const storedWatchlist = JSON.parse(localStorage.getItem('watchlist'));
-    console.log(storedWatchlist);
     if (storedWatchlist) {
       setWatchlist(storedWatchlist);
     }
@@ -32,7 +38,6 @@ const App = () => {
           page: 1, //TODO: add next page functionality
         },
       });
-      console.log('result:', result);
       setResults(result.data.results);
     };
 
@@ -50,17 +55,17 @@ const App = () => {
         <Link className="p-4" to="/watchlist">
           watchlist
         </Link>
+        <button onClick={findShared}>shared</button>
       </div>
       <Switch>
         <Route path="/watchlist">
-          <Watchlist watchlist={watchlist} />
+          <Watchlist watchlist={watchlist} setWatchlist={setWatchlist} />
         </Route>
         <Route path="/">
           <div>
             <div className="flex justify-center">
               <SearchBar setMovieTerm={setMovieTerm} />
             </div>
-
             <MovieList
               items={results}
               setWatchlist={setWatchlist}
