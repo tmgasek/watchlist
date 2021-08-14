@@ -8,3 +8,10 @@ export default axios.create({
     api_key: KEY,
   },
 });
+
+// const config = async () => {
+//   const result = await movieDb.get('configuration');
+//   console.log(result);
+// };
+
+// config();

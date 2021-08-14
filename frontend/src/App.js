@@ -9,13 +9,7 @@ const App = () => {
   const [movieTerm, setMovieTerm] = useState('');
   const [results, setResults] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
-
-  const findShared = () => {
-    const shared = results.filter((res) =>
-      watchlist.find((movie) => movie.id === res.id)
-    );
-    console.log(shared);
-  };
+  const [alreadyInWatchlist, setAlreadyInWatchlist] = useState([]);
 
   useEffect(() => {
     const storedWatchlist = JSON.parse(localStorage.getItem('watchlist'));
@@ -25,12 +19,6 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    // const config = async () => {
-    //   const result = await movieDb.get('configuration');
-    //   console.log(result);
-    // };
-
-    // config();
     const search = async () => {
       const result = await movieDb.get('search/movie', {
         params: {
@@ -44,7 +32,23 @@ const App = () => {
     if (movieTerm) {
       search();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movieTerm]);
+
+  useEffect(() => {
+    if (results && watchlist) {
+      const shared = results.filter((res) =>
+        watchlist.find((movie) => movie.id === res.id)
+      );
+
+      setAlreadyInWatchlist(shared);
+    }
+  }, [results, watchlist]);
+
+  console.log(
+    'already in watchlist',
+    alreadyInWatchlist.map((m) => m.title)
+  );
 
   return (
     <div className="text-gray-600 font-body p-2 bg-gray-100 min-h-screen">
@@ -55,7 +59,7 @@ const App = () => {
         <Link className="p-4" to="/watchlist">
           watchlist
         </Link>
-        <button onClick={findShared}>shared</button>
+        {/* <button onClick={findShared}>shared</button> */}
       </div>
       <Switch>
         <Route path="/watchlist">
