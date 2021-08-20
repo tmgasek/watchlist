@@ -45,11 +45,6 @@ const App = () => {
     }
   }, [results, watchlist]);
 
-  console.log(
-    'already in watchlist',
-    alreadyInWatchlist.map((m) => m.title)
-  );
-
   return (
     <div className="text-gray-600 font-body p-2 bg-gray-100 min-h-screen">
       <div className="text-2xl flex justify-center">
@@ -71,6 +66,7 @@ const App = () => {
               <SearchBar setMovieTerm={setMovieTerm} />
             </div>
             <MovieList
+              alreadyInWatchlist={alreadyInWatchlist}
               items={results}
               setWatchlist={setWatchlist}
               watchlist={watchlist}

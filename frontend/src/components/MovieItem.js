@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const MovieItem = ({ item, watchlist, setWatchlist }) => {
+const MovieItem = ({ item, watchlist, setWatchlist, alreadyInWatchlist }) => {
+  const [saved, setSaved] = useState(null);
+
+  useEffect(() => {
+    alreadyInWatchlist.forEach((watchlistItem) => {
+      if (watchlistItem.id === item.id) {
+        setSaved(true);
+      }
+    });
+  }, [alreadyInWatchlist, item.id]);
+
+  //  TODO FIX
   const onSaveClick = () => {
-    setWatchlist(watchlist.concat(item));
+    if (watchlist.find((wItem) => wItem.id === item.id)) {
+      setWatchlist(
+        watchlist.filter((watchlistItem) => watchlistItem.id !== item.id)
+      );
+      setSaved(false);
+      console.log(watchlist);
+      localStorage.setItem('watchlist', JSON.stringify(watchlist));
+      return;
+    }
 
+    setWatchlist(watchlist.concat(item));
     const storedWatchlist = JSON.parse(localStorage.getItem('watchlist'));
+
     if (storedWatchlist) {
       localStorage.setItem(
         'watchlist',
@@ -28,12 +49,10 @@ const MovieItem = ({ item, watchlist, setWatchlist }) => {
           className="btn border-blue-200 border-2 m-2 hover:text-black hover:border-blue-500 bg-white"
           onClick={onSaveClick}
         >
-          save
+          {saved ? 'HELLO' : 'save'}
         </button>
       </div>
-      <div className="pt-0 self-center">
-        {/* <button onClick={onSaveClick}>save</button> */}
-      </div>
+      {/* <div className="pt-0 self-center"></div> */}
     </div>
   );
 };
